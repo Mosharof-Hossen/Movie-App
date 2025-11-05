@@ -2,7 +2,7 @@ import { icons } from '@/constants/icons'
 import { images } from '@/constants/images'
 import { Tabs } from 'expo-router'
 import React from 'react'
-import { Image, ImageBackground, StyleSheet, Text, View } from 'react-native'
+import { Image, ImageBackground, Text, View } from 'react-native'
 
 const TabIcon = ({ focused, icon, title }: { focused: boolean, icon: any, title: string }) => {
     if (focused) {
@@ -80,5 +80,3 @@ const _Layout = () => {
 }
 
 export default _Layout
-
-const styles = StyleSheet.create({})
