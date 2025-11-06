@@ -3,6 +3,7 @@ import SearchBar from '@/components/SearchBar'
 import { icons } from '@/constants/icons'
 import { images } from '@/constants/images'
 import { fetchMovies } from '@/services/api'
+import { updateSearchCount } from '@/services/appwrite'
 import useFetch from '@/services/useFetch'
 import React, { useEffect, useMemo, useState } from 'react'
 import { ActivityIndicator, FlatList, Image, Text, View } from 'react-native'
@@ -23,10 +24,13 @@ const Search = () => {
     const timeoutId = setTimeout(async () => {
       if(searchQuery.trim()){
         await loadMovies()
+        if(movies?.results.length > 0 && movies?.results[0]){
+          await updateSearchCount(searchQuery, movies?.results[0] as Movie)
+        }
       } else {
         reset()
       }
-    },500)
+    },1000)
 
     return () => clearTimeout(timeoutId)
   }, [searchQuery])
