@@ -11,6 +11,7 @@ import { ActivityIndicator, FlatList, Image, Text, View } from 'react-native'
 const Search = () => {
   const [searchQuery, setSearchQuery] = useState('')
 
+
   const {
     data: movies,
     loading: moviesLoading,
@@ -22,18 +23,30 @@ const Search = () => {
 
   useEffect(() => {
     const timeoutId = setTimeout(async () => {
-      if(searchQuery.trim()){
+      if (searchQuery.trim()) {
         await loadMovies()
-        if(movies?.results.length > 0 && movies?.results[0]){
+        if (movies?.results.length > 0 && movies?.results[0]) {
           await updateSearchCount(searchQuery, movies?.results[0] as Movie)
         }
       } else {
         reset()
       }
-    },1000)
+    }, 1000)
 
     return () => clearTimeout(timeoutId)
   }, [searchQuery])
+
+
+  useEffect(() => {
+    const func = async () => {
+      if (movies?.results.length > 0 && movies?.results[0]) {
+        await updateSearchCount(searchQuery, movies?.results[0] as Movie)
+      }else{
+        reset()
+      }
+    }
+    func().catch(console.error)
+  }, [movies?.results])
 
   const handleSearch = (text: string) => {
     setSearchQuery(text)
@@ -90,10 +103,10 @@ const Search = () => {
           !moviesLoading && !moviesError ? (
             <View className='mt-10 px-5'>
               <Text className='text-center text-gray-500'>
-                {searchQuery.trim()? "No Movies Found": "Search For a Movie"}
+                {searchQuery.trim() ? "No Movies Found" : "Search For a Movie"}
               </Text>
             </View>
-          ):( null )
+          ) : (null)
         }
       />
     </View>
